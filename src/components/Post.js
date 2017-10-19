@@ -1,11 +1,13 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
+import HeaderPost from './HeaderPost.js'
+
 const Post = ({post}) => {
    const id = 1
    return (
        <div>
-           <h1>Post</h1>
+           <HeaderPost showActions={false}/>
            <p>
            "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti 
            atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique 

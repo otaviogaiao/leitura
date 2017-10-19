@@ -83,7 +83,7 @@ class ShowPost extends Component {
                    <Col md={9} lg={9}>
                       <div>
                           {!this.state.editing &&
-                           ([<HeaderPost key='header' onEdit={this.edit}/>,
+                           ([<HeaderPost key='header' onEdit={this.edit} showActions={true}/>,
                             <div key='text' dangerouslySetInnerHTML={{__html: this.texto}}></div>])
                            }
                            {this.state.editing &&

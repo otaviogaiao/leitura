@@ -18,7 +18,7 @@ class HeaderPost extends Component {
                         <h1>Title</h1>
                         <div>
                             <p>Submitted on October, 1th, 2017 by Otávio Gaião</p>
-                            <a className="link-black">2 comments</a> <a className="link-black" onClick={this.props.onEdit}>Edit</a> <a className="link-black">Delete</a>
+                            {this.props.showActions && <span><a className="link-black">2 comments</a> <a className="link-black" onClick={this.props.onEdit}>Edit</a> <a className="link-black">Delete</a></span>}
                         </div>
                     </Col>
                 </Row>

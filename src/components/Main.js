@@ -5,20 +5,28 @@ import {Grid, Row, Col, ButtonToolbar, ToggleButtonGroup, ToggleButton, Button,
 
 import CategoryList from './CategoryList.js'
 import PostList from './PostList.js'
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
 
 class Main extends Component {
 
-    
+    constructor(props){
+        super(props)
+        this.changeSort = this.changeSort.bind(this)
+    }
+
     onSelect(){
         return 2
+    }
+
+    changeSort(value){
+        this.props.history.push('?sort='+value)
     }
 
     render(){
         return (
             <Grid>
                 <Row>
-                    <Col md={4} lg={4}><CategoryList /></Col>
+                    <Col md={4} lg={4} ><CategoryList /></Col>
                     <Col md={4} lg={4}><PostList /></Col>
                     <Col md={4} lg={4}>
                         <Row>
@@ -28,7 +36,8 @@ class Main extends Component {
                             <Col md={6}>
                                 <div>             
                                         <ButtonToolbar>
-                                                <ToggleButtonGroup type="radio" name="sortBy" defaultValue={'score'}>
+                                                <ToggleButtonGroup type="radio" name="sortBy" defaultValue={'score'}
+                                                 onChange={this.changeSort}>
                                                     <ToggleButton value={'score'}>
                                                         Score
                                                     </ToggleButton>
@@ -68,4 +77,5 @@ class Main extends Component {
     }
 }
 
-export default Main
+const MainWithRouter = withRouter(Main)
+export default MainWithRouter
