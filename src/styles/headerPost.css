@@ -1,0 +1,12 @@
+.alinhar-esquerda {
+    float: left;
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 1vh;
+}
+
+.alinhar-esquerda > *{
+    float: left;
+    display: block;
+}
