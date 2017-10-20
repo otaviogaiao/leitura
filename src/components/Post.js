@@ -19,7 +19,7 @@ const Post = ({post}) => {
            reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat."
             </p>
 
-          <Link to={`/posts/${id}`}>Read more</Link>
+          <Link to={`/noticias/${id}`}>Read more</Link>
        </div>
    )
 }
