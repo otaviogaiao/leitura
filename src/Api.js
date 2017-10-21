@@ -10,7 +10,7 @@ const headers = {
 
 export const getAllCategories = () => 
      fetch(`${url}/categories`, {headers})
-        .then(res => res.json())
+        .then(res => res.json()).then(res => res.categories)
 
 
 export const getCategoryPosts = (category) => 

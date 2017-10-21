@@ -3,7 +3,8 @@ import React, {Component} from 'react'
 
 import {Grid, Row, Col, ButtonToolbar, Button, FormControl} from 'react-bootstrap'
 
-import {Link} from 'react-router-dom'
+import {Link, withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 import CommentList from './CommentList.js'
 import HeaderPost from './HeaderPost.js'
@@ -19,6 +20,10 @@ class ShowPost extends Component {
         this.setState((oldState) => {
             return {editing: !oldState.editing}
         })
+    }
+
+    componentDidMount(){
+        
     }
 
     texto = ` <p>
@@ -124,4 +129,8 @@ class ShowPost extends Component {
     }
 }
 
-export default ShowPost
+function mapStateToProps({posts}){
+    return {posts}
+}
+
+export default withRouter(connect(mapStateToProps)(ShowPost))

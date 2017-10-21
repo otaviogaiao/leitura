@@ -1,16 +1,19 @@
 import React from 'react'
 import {ListGroup, ListGroupItem} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 
-const CategoryList = (props) => {
+import {withRouter} from 'react-router'
+
+const CategoryList = ({categories}) => {
     return (
         <ListGroup>
-            <ListGroupItem>Categoria 1</ListGroupItem>
-            <ListGroupItem>Categoria 2</ListGroupItem>
-            <ListGroupItem>Categoria 3</ListGroupItem>
-            <ListGroupItem>Categoria 4</ListGroupItem>
-            <ListGroupItem>Categoria 5</ListGroupItem>
+            {categories.length > 0 && categories.map((category) => {
+                return (<ListGroupItem key={category.name}>
+                    <Link to={`/${category.path}`}>{category.name}</Link>
+                  </ListGroupItem>)
+            })} 
         </ListGroup>
     )
 }
 
-export default CategoryList
+export default withRouter(CategoryList)

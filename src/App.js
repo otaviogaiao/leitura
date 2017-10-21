@@ -4,16 +4,23 @@ import {PageHeader} from 'react-bootstrap'
 
 import {Switch, Route, Link} from 'react-router-dom'
 
-import MainWithRouter from './components/Main.js'
+import Main from './components/Main.js'
 import ShowPost from './components/ShowPost.js'
 import NewPost from './components/NewPost.js'
 
+import {connect} from 'react-redux'
+
 import {getAllPosts} from './Api.js'
+
+import {withRouter} from 'react-router-dom'
+
+import {fetchCategories, fetchAllPosts, fetchAllPostsFromCategory, sortPosts} from './actions'
+
 
 class App extends Component {
 
   componentDidMount(){
-    getAllPosts().then(data => console.log(data))
+    this.props.dispatch(fetchCategories())
   }
 
   render() {
@@ -22,8 +29,8 @@ class App extends Component {
         <PageHeader><Link to="/" style={{":hover": {textDecoration: 'none', color: 'inherit'}, 
         textDecoration: 'none', color: 'inherit'}}>Leitura</Link></PageHeader>
         <Switch>
-          <Route exact path="/" component={MainWithRouter}/>
-          <Route exact path="/:category" component={MainWithRouter} />
+          <Route exact path="/" component={Main}/>
+          <Route exact path="/:category" component={Main} />
           <Route exact path="/posts/new" component={NewPost} />
           <Route exact path="/:category/:post_id" component={ShowPost} />
         </Switch>
@@ -32,5 +39,4 @@ class App extends Component {
   }
 }
 
-// const AppWithRouter = withRouter(App)
-export default App
+export default withRouter(connect()(App))
