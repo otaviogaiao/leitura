@@ -1,14 +1,13 @@
 import React, {Component} from 'react'
 
-import {Grid, Row, Col, ButtonToolbar, ToggleButtonGroup, ToggleButton, Button,
-       Pagination} from 'react-bootstrap'
+import {Grid, Row, Col, ButtonToolbar, ToggleButtonGroup, ToggleButton, Button} from 'react-bootstrap'
 
 import CategoryList from './CategoryList.js'
 import PostList from './PostList.js'
 import {Link, withRouter} from 'react-router-dom'
 
 import {connect} from 'react-redux'
-import {fetchCategories, fetchAllPosts, fetchAllPostsFromCategory, sortPosts} from '../actions'
+import {getAllPosts, getAllPostsFromCategory } from '../actions'
 
 import 'url-search-params-polyfill';
 
@@ -17,51 +16,27 @@ class Main extends Component {
     constructor(props){
         super(props)
         this.changeSort = this.changeSort.bind(this)
-        this.order = this.order.bind(this)
-        // console.log(props)
     }
 
     componentDidMount(){
-
-        console.log(this.props.history)
-        let path = this.props.history.location.pathname
-        path = path.substr(1)
-        console.log(path)
-        if(path.length == 0){
-            this.props.dispatch(fetchAllPosts())
-        }else{
-            this.props.dispatch(fetchAllPostsFromCategory(path))
-        }
-        // this.order(this.props.location.search)
+        this.loadData()
     }
 
 
     componentDidUpdate(prevProps){
-        console.log('oldProps', prevProps)
-        console.log('newProps', this.props)
         if(prevProps.location.pathname !== this.props.location.pathname){
-            let path = this.props.history.location.pathname
-            path = path.substr(1)
-            if(path.length == 0){
-                this.props.dispatch(fetchAllPosts())
-            }else{
-                this.props.dispatch(fetchAllPostsFromCategory(path))
-            }
-               
+           this.loadData()
         }
-        if(prevProps.location.search !== this.props.location.search){
-            this.order(prevProps.location.search)
-        }
-        
     }
 
-    order(search){
-        const by = new URLSearchParams(search);
-        this.props.dispatch(sortPosts(by.get('sort')))
-    }
-
-    onSelect(){
-        return 2
+    loadData = () => {
+        let path = this.props.history.location.pathname
+        path = path.substr(1)
+        if(path.length === 0){
+            this.props.getPosts()
+        }else{
+            this.props.getPostsByCategory(path)
+        }
     }
 
     changeSort(value){
@@ -108,15 +83,6 @@ class Main extends Component {
                         </Row>
                     </Col>
                 </Row>
-                <Row>
-                    <Col md={12} lg={12}>
-                    <Pagination
-                        bsSize="medium"
-                        items={10}
-                        activePage={2}
-                        onSelect={this.onSelect} />
-                    </Col>
-                </Row>
             </Grid>
         )
        
@@ -124,10 +90,24 @@ class Main extends Component {
 }
 
 // const MainWithRouter = withRouter(Main)
+function mapDispatchToProps(dispatch){
+    return {
+        getPosts: () => dispatch(getAllPosts()),
+        getPostsByCategory: (c) => dispatch(getAllPostsFromCategory(c))
+    }
+}
+
 
 // const AppWithRouter = withRouter(App)
-function mapStateToProps({categories, posts}){
+function mapStateToProps(state, ownProps){
+    let { categories, posts } = state.entities
+    const by = new URLSearchParams(ownProps.location.search)
+    by.get('sort') === 'score' 
+        ? posts = [...posts].sort((a, b) => a.voteScore < b.voteScore)
+        : posts = [...posts].sort((a, b) => a.timestamp < b.timestamp)
+
+
     return {categories, posts}
 }
   
-export default withRouter(connect(mapStateToProps)(Main))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main))

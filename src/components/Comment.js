@@ -18,21 +18,17 @@ class Comment extends Component {
         })
     }
 
-    texto = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis ullamcorper odio vitae euismod. 
-    Donec nec velit ac urna suscipit tempor. Vivamus quis posuere justo. Mauris fermentum lacinia tellus at rhoncus. 
-    Etiam molestie iaculis tortor, id viverra tellus. 
-    Proin rutrum pellentesque nisi, at viverra erat malesuada ut. Donec quis elit tortor. In porta egestas ultrices.`
-
-
+  
     render(){
+        const { comment } = this.props
         return <Well>
             <div>
-                <LikeDislike />
+                <LikeDislike score={comment.voteScore}/>
                 {this.state.editing && 
                 <div>
                     <form>
                         <FormControl componentClass="textarea" style={{ minHeight: 200 }}
-                        defaultValue={this.texto} />
+                        defaultValue={comment.body} />
                         <ButtonGroup>
                             <Button>Save</Button>
                             <Button onClick={this.edit}>Cancel</Button>
@@ -40,7 +36,7 @@ class Comment extends Component {
                     </form>
                 </div>}
                 {!this.state.editing && <div>
-                    <p>{this.texto}</p></div>}
+                    <p>{comment.body}</p></div>}
             </div>
            
             {!this.state.editing && <div>

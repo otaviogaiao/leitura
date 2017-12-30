@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom'
 import HeaderPost from './HeaderPost.js'
 
 const Post = ({post}) => {
-   const id = 1
    return (
        <div>
            <HeaderPost showActions={false} post={post}/>

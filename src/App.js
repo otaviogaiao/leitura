@@ -10,17 +10,15 @@ import NewPost from './components/NewPost.js'
 
 import {connect} from 'react-redux'
 
-import {getAllPosts} from './Api.js'
-
 import {withRouter} from 'react-router-dom'
 
-import {fetchCategories, fetchAllPosts, fetchAllPostsFromCategory, sortPosts} from './actions'
+import {getCategories} from './actions'
 
 
 class App extends Component {
 
   componentDidMount(){
-    this.props.dispatch(fetchCategories())
+    this.props.loadCategories()
   }
 
   render() {
@@ -39,4 +37,10 @@ class App extends Component {
   }
 }
 
-export default withRouter(connect()(App))
+function mapDispatchToProps(dispatch){
+    return {
+      loadCategories: () => dispatch(getCategories())
+    }
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(App))
