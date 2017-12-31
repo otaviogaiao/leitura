@@ -4,7 +4,12 @@ import {Well, Button, ButtonGroup, FormControl} from 'react-bootstrap'
 
 import LikeDislike from './LikeDislike.js'
 
+import { voteComment } from '../actions'
+
 import '../styles/comment.css'
+
+import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 class Comment extends Component {
 
@@ -18,12 +23,15 @@ class Comment extends Component {
         })
     }
 
+    vote = (vote) => {
+        this.props.dispatch(voteComment(this.props.comment, vote))
+    }
   
     render(){
         const { comment } = this.props
         return <Well>
             <div>
-                <LikeDislike score={comment.voteScore}/>
+                <LikeDislike score={comment.voteScore} onVoteAction={this.vote}/>
                 {this.state.editing && 
                 <div>
                     <form>
@@ -47,4 +55,4 @@ class Comment extends Component {
     }
 }
 
-export default Comment
+export default withRouter(connect()(Comment))

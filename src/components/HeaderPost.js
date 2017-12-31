@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom'
 class HeaderPost extends Component {
 
     vote = (vote) => {
+        console.log('voting...', this.props.post.id, vote)
         this.props.dispatch(votePost(this.props.post.id, vote))
     }
 

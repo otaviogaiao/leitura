@@ -1,26 +1,25 @@
 import React, {Component} from 'react'
 
 
-import {Grid, Row, Col, ButtonToolbar, Button, FormControl} from 'react-bootstrap'
+import {Grid, Row, Col, ButtonToolbar, Button, FormControl } from 'react-bootstrap'
 
 import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import CommentList from './CommentList.js'
 import HeaderPost from './HeaderPost.js'
+import CommentForm from './CommentForm'
 
-import { getPost, getAllComments } from '../Api'
-import { loading } from '../actions'
+import { byId } from '../utils/helpers'
+
+import { getPostById, getComments } from '../actions'
 
 
 class ShowPost extends Component {
 
     state = {
         editing: false,
-        loadingComments: true,
-        post: null,
-        comments: [],
-        errorLoadingComments: false
+        comment: ''
     }
 
     edit = () => {
@@ -30,22 +29,15 @@ class ShowPost extends Component {
     }
 
     componentDidMount(){
-        this.props.dispatch(loading(true))
-        const  postId = this.props.match.params.post_id
-        getPost(postId).then(( post ) => {
-            this.setState({ post }, () => this.props.dispatch(loading(false)))
-        })
-        getAllComments(postId).then((comments) => {
-            this.setState({ comments, loadingComments: false })
-        }).catch( erro => {
-            this.setState({ loadingComments: false, errorLoadingComments: true})
-        })
+        const postId = this.props.match.params.post_id
+        this.props.getPost(postId)
+        this.props.getAllComments(postId)
     }
     
     render(){
-        const { post, comments } = this.state
-
-        if(this.props.loading || !post)
+        const { post, comments, loading, loadingComments } = this.props
+        console.log('comments', comments)
+        if(loading || !post)
             return <div>Loading...</div>
 
 
@@ -74,11 +66,15 @@ class ShowPost extends Component {
                      <hr />
                       <form>
                           <h3>Add Comment</h3>
-                          <FormControl componentClass="textarea" style={{ minHeight: 200 }} /><br/>
-                          <Button bsStyle="primary" style={{float: 'left'}}>Save</Button>
+                          <CommentForm />
                       </form>
                       <br />
-                      <CommentList comments={comments}/>
+                    
+                      {loadingComments
+                        ? <p>Loading comments ...</p>
+                        :  <CommentList comments={comments} />
+                      }
+                     
                    </Col>
 
                    <Col md={3} lg={3}>
@@ -97,10 +93,22 @@ class ShowPost extends Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapDispatchToProps(dispatch){
     return {
-        loading: state.config.loading
+        getPost: (postId) => dispatch(getPostById(postId)),
+        getAllComments: (postId) => dispatch(getComments(postId))
     }
 }
 
-export default withRouter(connect(mapStateToProps)(ShowPost))
+function mapStateToProps(state, props) {
+    let post = byId(state.entities.posts, props.match.params.post_id)
+    console.log('state', state)
+    return {
+        loading: state.config.loading,
+        loadingComments: state.config.loadingComments,
+        post: Object.assign({}, post),
+        comments: state.entities.comments
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShowPost))

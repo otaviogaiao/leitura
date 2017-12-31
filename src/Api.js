@@ -4,6 +4,7 @@ const token = '3lloj8141sdfa56423sdf55232'
 
 const headers = {
     'Accept': 'application/json',
+    'Content-Type': 'application/json',
     'Authorization': token
   }
 
@@ -37,7 +38,7 @@ export const votePost = (postId, vote) =>
     fetch(`${url}/posts/${postId}`, {
          headers: {...headers},
          method: 'POST',
-         body: JSON.stringify({vote})
+         body: JSON.stringify({option: vote})
         })
         .then(res => res.json())
 
@@ -76,7 +77,7 @@ export const voteComment = (commentId, vote) =>
     fetch(`${url}/comments/${commentId}`, {
          headers: {...headers},
          method: 'POST',
-         body: JSON.stringify({vote})
+         body: JSON.stringify({option: vote})
         })
         .then(res => res.json())
 

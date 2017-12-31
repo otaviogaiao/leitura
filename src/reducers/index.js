@@ -1,21 +1,22 @@
 import {combineReducers} from 'redux'
 
 import {GET_CATEGORIES, GET_ALL_POSTS, 
-    GET_POST_BY_ID, ADD_POST, LOADING, VOTE_POST} from '../actions'
+    GET_POST_BY_ID, ADD_POST, LOADING, VOTE_POST, LOADING_COMMENTS, GET_COMMENTS,
+    ADD_COMMENT, VOTE_COMMENT} from '../actions'
 
 const entityInitialState = {
     categories: [],
     posts: [],
-    selectedPost: null
+    comments: []
 }
 
 const configInitialState = {
-    loading: false
+    loading: false,
+    loadingComments: false
 }
 
 function entityReducer(state = entityInitialState, action){
-    let { posts } = state
-    console.log('state',  state)
+    let { posts, comments } = state
     switch(action.type){
         case GET_CATEGORIES:
             return {
@@ -35,18 +36,30 @@ function entityReducer(state = entityInitialState, action){
         case GET_POST_BY_ID:
             return {
                 ...state,
-                selectedPost: action.post
+                posts: [action.post]
             }
         case VOTE_POST:
-            let post = posts.reduce((acc, atual) => {
-                if(atual.id === action.postId){
-                    return atual
-                }
-                return acc
-            })
+            let p = posts.concat([])
+            let index = p.findIndex((valor) => valor.id === action.postId)
+            p[index].voteScore = action.vote === 'upVote' ? p[index].voteScore + 1 : p[index].voteScore - 1
             return {
                 ...state,
-                selectedPost: post
+                posts: p
+            }
+        case GET_COMMENTS: 
+            return {
+                ...state,
+                comments: action.comments
+            }
+        case ADD_COMMENT:
+            return {
+                ...state,
+                comments: state.comments.concat(action.comment)
+            }
+        case VOTE_COMMENT:
+            return {
+                ...state,
+                comments: Object.assign([], comments, action.comment)
             }
         default:
             return state
@@ -60,6 +73,11 @@ function configReducer(state = configInitialState, action){
                 ...state,
                 loading: action.loading
             }
+        case LOADING_COMMENTS: 
+            return {
+                ...state,
+                loadingComments: action.loadingComments
+            }
         default:
             return state
     }
@@ -71,43 +89,3 @@ export default combineReducers(
         config: configReducer
     }
 )
-
-// function categories(state = {}, action){
-//     switch(action.type){
-//         case GET_CATEGORIES:
-//             return {
-//                 ...state,
-//                 categories: action.categories
-//             }
-//         default:
-//             return state
-//     }
-// }
-
-// function posts(state = {}, action){
-//     switch(action.type){
-//         case GET_ALL_POSTS:
-//             return  action.posts
-//         case GET_ALL_POSTS_FROM_CATEGORY:
-//             return  action.posts
-//         case SORT_POSTS:
-//             return action.by === 'score' ? 
-//                                 state.sort((a, b) => a.voteScore < b.voteScore) :
-//                                 state.sort((a, b) => a.timestamp < b.timestamp)
-//         case ADD_POST:
-//             return state.posts.push(action.post)
-//         default:
-//             return state
-//     }
-// }
-
-// function selectedPost(state = {}, action){
-//     console.log('post', state)
-//     switch(action.type){
-//         case GET_POST_BY_ID:
-//             return {} //pegar o post do array de posts pelo ID
-//         default:
-//             return state
-//     }
-// }
-
