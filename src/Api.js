@@ -26,7 +26,7 @@ export const addPost = (post) =>
     fetch(`${url}/posts`, {
         headers: {...headers},
         method: 'POST',
-        body: JSON.stringify({post})
+        body: JSON.stringify(post)
     })
       .then(res => res.json())
 

@@ -1,8 +1,11 @@
 import React, {Component} from 'react'
 
-import {FormControl, Button, Grid, Row, Col, ControlLabel, FormGroup} from 'react-bootstrap'
 import {connect} from 'react-redux'
-import {addNewPost} from '../actions'
+import {addNewPost, getPostById, updatePost} from '../actions'
+import { withRouter } from 'react-router-dom'
+
+import PostForm from './PostForm'
+import { byId } from '../utils/helpers'
 
 class NewPost extends Component {
 
@@ -11,67 +14,52 @@ class NewPost extends Component {
         this.savePost = this.savePost.bind(this)
     }
 
-    state = {
-        title: '',
-        body: '',
-        category: '',
-        author: 'Otavio',
-        id: '',
-        timestamp: null
+    componentDidMount(){
+        const postId = this.props.match.params.post_id
+        postId && this.props.getPost(postId)
     }
 
-    savePost(){
-        console.log(this.state)
-        this.setState({timestamp: Date.now(), id: Math.random() * 16})
-        this.props.dispatch(addNewPost(this.state))
+    savePost(post){
+        const postId = this.props.match.params.post_id
+        if(postId){
+            this.props.updatePost(post).then(() => {
+                this.props.history.push(`/${post.category}/${post.id}`)
+            })
+        }else{
+            this.props.addNewPost(post).then(() => {
+                this.props.history.push('/')
+            })
+        }
+
+
     }
     
     render(){
+        const { loading, post, categories, history } = this.props
         return (
-            <Grid>
-                <Row>
-                    <Col md={12} lg={12}>
-                    <form>
-                        <FormGroup>
-                            <ControlLabel htmlFor="title" style={{float: 'left'}}>Title</ControlLabel>
-                            <FormControl type="text" name="title" onChange={(event) => {
-                                this.setState({title: event.target.value})
-                            }}/>
-                        </FormGroup>
-                        
-                        <FormGroup>
-                            <ControlLabel htmlFor="conteudo" style={{float: 'left'}}>Text</ControlLabel>
-                            <FormControl componentClass="textarea" name="conteudo" style={{ minHeight: 400 }} onChange={(event) => {
-                                this.setState({body: event.target.value})
-                            }}/>
-                        </FormGroup>
-
-                        <FormGroup controlId="formControlsSelect">
-                            <ControlLabel style={{float: 'left'}}>Select</ControlLabel>
-                            <FormControl componentClass="select" placeholder="select" onChange={(event) => {
-                                this.setState({category: event.target.value})
-                            }}>
-                                <option value="">Selecione..</option>
-                                {this.props.categories.length > 0 && 
-                                    this.props.categories.map((category) => <option key={category.name} value={category.name}>{category.name}</option>)}
-                            </FormControl>
-                        </FormGroup>
-                        
-                        <br/>
-                        <div>
-                            <Button bsStyle="primary" onClick={this.savePost}>Save</Button> <Button bsStyle="warning" onClick={this.props.history.goBack}>Cancel</Button>
-                        </div>
-                        
-                    </form>
-                    </Col>
-                </Row>
-            </Grid>
-        )
+            loading ? <div>Loading....</div> 
+                : <PostForm categories={categories} onSubmitAction={this.savePost}
+                    onCancelAction={() => history.goBack()} post={post}/>
+            )
+        
     }
 }
 
-function mapStateToProps({categories}){
-    return {categories}
+function mapDispatchToProps(dispatch){
+    return {
+        getPost: (postId) => dispatch(getPostById(postId)),
+        addNewPost: (post) => dispatch(addNewPost(post)),
+        updatePost: (post) => dispatch(updatePost(post))
+    }
 }
 
-export default connect(mapStateToProps)(NewPost)
+function mapStateToProps(state, props){
+    let post = byId(state.entities.posts, props.match.params.post_id)
+    return {
+        categories: state.entities.categories,
+        loading: state.config.loading,
+        post: post
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NewPost))

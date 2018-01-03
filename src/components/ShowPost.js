@@ -5,6 +5,7 @@ import {Grid, Row, Col, ButtonToolbar, Button, FormControl } from 'react-bootstr
 
 import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
+import _orderBy from 'lodash.orderby'
 
 import CommentList from './CommentList.js'
 import HeaderPost from './HeaderPost.js'
@@ -23,11 +24,11 @@ class ShowPost extends Component {
         comment: ''
     }
 
-    edit = () => {
-        this.setState((oldState) => {
-            return {editing: !oldState.editing}
-        })
-    }
+    // edit = () => {
+    //     this.setState((oldState) => {
+    //         return {editing: !oldState.editing}
+    //     })
+    // }
 
     componentDidMount(){
         const postId = this.props.match.params.post_id
@@ -45,7 +46,8 @@ class ShowPost extends Component {
             author: username,
             body,
             parentId: this.props.post.id,
-            timestamp: new Date().getTime()
+            timestamp: new Date().getTime(),
+            voteScore: 1
         }
         this.props.addComment(comment)
     }
@@ -72,7 +74,7 @@ class ShowPost extends Component {
                    <Col md={9} lg={9}>
                       <div>
                           {!this.state.editing &&
-                           ([<HeaderPost key='header' onEdit={this.edit} showActions={true} 
+                           ([<HeaderPost key='header' showActions={true} 
                                 post={post}/>,
                             <div key='text' dangerouslySetInnerHTML={{__html: post.body}}></div>])
                            }
@@ -132,12 +134,12 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props) {
     let post = byId(state.entities.posts, props.match.params.post_id)
-
+    console.log(state.entities.comments)
     return {
         loading: state.config.loading,
         loadingComments: state.config.loadingComments,
         post,
-        comments: state.entities.comments
+        comments: _orderBy(state.entities.comments, ['voteScore', 'timestamp'],['desc', 'desc'])
     }
 }
 
