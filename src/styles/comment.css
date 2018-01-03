@@ -1,4 +1,32 @@
 .icons-like-dislike {
     float: left;
+    margin: 10;
 }
 
+.comment {
+    text-align: justify;
+    padding: 10;
+}
+
+.small {
+    font-size: 5;
+    margin: 10px;
+}
+
+.cancel-button {
+    float: left;
+    display: block;
+}
+
+.comment-form{
+    display: block;
+}
+
+.comment-body{
+    margin: 10px;
+    display: block;
+}
+
+a:hover {
+    cursor: pointer;
+}

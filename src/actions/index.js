@@ -1,6 +1,7 @@
 
 import {getAllCategories, getAllPosts as getAllPostsApi, getCategoryPosts, addPost,
-    votePost as votePostApi, getPost, getAllComments, addComment, voteComment as voteCommentApi} from '../Api.js'
+    votePost as votePostApi, getPost, getAllComments, addComment, voteComment as voteCommentApi,
+    updateComment as updateCommentApi, deleteComment as deleteCommentApi} from '../Api.js'
 
 export const GET_CATEGORIES = 'GET_CATEGORIES'
 export const GET_ALL_POSTS = 'GET_ALL_POSTS'
@@ -10,22 +11,12 @@ export const GET_POST_BY_ID = 'GET_POST_BY_ID'
 export const ADD_POST = 'ADD_POST'
 export const GET_COMMENTS = 'GET_COMMENTS'
 export const ADD_COMMENT = 'ADD_COMMENT'
+export const UPDATE_COMMENT = 'UPDATE_COMMENT'
+export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const LOADING = 'LOADING'
 export const LOADING_COMMENTS = 'LOADING_COMMENTS'
 export const VOTE_POST = 'VOTE_POST'
 export const VOTE_COMMENT = 'VOTE_COMMENT'
-
-// export function getCategories(categories){
-//     return {type: GET_CATEGORIES, categories}
-// }
-
-// export function getAllPosts(posts){
-//     return {type: GET_ALL_POSTS, posts}
-// }
-
-// export function getAllPostsFromCategory(posts){
-//     return {type: GET_ALL_POSTS_FROM_CATEGORY, posts}
-// }
 
 export function getPostById(postId){
     return function(dispatch){
@@ -94,6 +85,28 @@ export function addNewComment(comment){
     }
 }
 
+export function updateComment(comment) {
+    return function(dispatch){
+        return updateCommentApi(comment).then(() => {
+            return dispatch({
+                type: UPDATE_COMMENT,
+                comment
+            })
+        })
+    }
+}
+
+export function deleteComment(id) {
+    return function(dispatch){
+        return deleteCommentApi(id).then(() => {
+            return dispatch({
+                type: DELETE_COMMENT,
+                id
+            })
+        })
+    }
+}
+
 export function addNewPost(post){
     return dispatch => {
         return addPost(post).then(data => dispatch({type: ADD_POST, post}))
@@ -118,7 +131,7 @@ export function voteComment(comment, vote){
             .then(() => {
                 return dispatch({
                     type: VOTE_COMMENT,
-                    comment,
+                    commentId: comment.id,
                     vote
                 })
             })

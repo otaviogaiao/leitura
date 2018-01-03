@@ -7,7 +7,7 @@ import PostList from './PostList.js'
 import {Link, withRouter} from 'react-router-dom'
 
 import {connect} from 'react-redux'
-import {getAllPosts, getAllPostsFromCategory } from '../actions'
+import {getAllPosts, getAllPostsFromCategory, votePost } from '../actions'
 
 import 'url-search-params-polyfill';
 
@@ -29,6 +29,10 @@ class Main extends Component {
         }
     }
 
+    vote = (id, vote) => {
+        this.props.vote(id, vote)
+    }
+
     loadData = () => {
         let path = this.props.history.location.pathname
         path = path.substr(1)
@@ -48,7 +52,7 @@ class Main extends Component {
             <Grid>
                 <Row>
                     <Col md={4} lg={4} ><CategoryList categories={this.props.categories}/></Col>
-                    <Col md={4} lg={4}><PostList posts={this.props.posts}/></Col>
+                    <Col md={4} lg={4}><PostList posts={this.props.posts} onVoteAction={this.vote}/></Col>
                     <Col md={4} lg={4}>
                         <Row>
                             <Col md={6}>
@@ -93,7 +97,8 @@ class Main extends Component {
 function mapDispatchToProps(dispatch){
     return {
         getPosts: () => dispatch(getAllPosts()),
-        getPostsByCategory: (c) => dispatch(getAllPostsFromCategory(c))
+        getPostsByCategory: (c) => dispatch(getAllPostsFromCategory(c)),
+        vote: (id, v) =>  dispatch(votePost(id, v))
     }
 }
 

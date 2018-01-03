@@ -12,7 +12,8 @@ import CommentForm from './CommentForm'
 
 import { byId } from '../utils/helpers'
 
-import { getPostById, getComments } from '../actions'
+import { getPostById, getComments, voteComment, addNewComment, updateComment,
+     deleteComment } from '../actions'
 
 
 class ShowPost extends Component {
@@ -33,10 +34,34 @@ class ShowPost extends Component {
         this.props.getPost(postId)
         this.props.getAllComments(postId)
     }
+
+    vote = (comment, vote) => {
+        this.props.voteComment(comment, vote)
+    }
+
+    addComment = (username, body) => {
+        let comment = {
+            id: new Date().getTime(),
+            author: username,
+            body,
+            parentId: this.props.post.id,
+            timestamp: new Date().getTime()
+        }
+        this.props.addComment(comment)
+    }
+
+    updateComment = (comment, username, body) => {
+        let updatedComment = {...comment, body, timestamp: new Date().getTime()}
+        this.props.updateComment(updatedComment)
+    }
+
+    deleteComment = (id) => {
+        this.props.deleteComment(id)
+    }
     
     render(){
         const { post, comments, loading, loadingComments } = this.props
-        console.log('comments', comments)
+
         if(loading || !post)
             return <div>Loading...</div>
 
@@ -66,13 +91,14 @@ class ShowPost extends Component {
                      <hr />
                       <form>
                           <h3>Add Comment</h3>
-                          <CommentForm />
+                          <CommentForm onSubmitAction={this.addComment}/>
                       </form>
                       <br />
                     
                       {loadingComments
                         ? <p>Loading comments ...</p>
-                        :  <CommentList comments={comments} />
+                        :  <CommentList comments={comments} onVoteAction={this.vote}
+                             onEditAction={this.updateComment} onDeleteAction={this.deleteComment}/>
                       }
                      
                    </Col>
@@ -96,17 +122,21 @@ class ShowPost extends Component {
 function mapDispatchToProps(dispatch){
     return {
         getPost: (postId) => dispatch(getPostById(postId)),
-        getAllComments: (postId) => dispatch(getComments(postId))
+        getAllComments: (postId) => dispatch(getComments(postId)),
+        voteComment: (comment, vote) => dispatch(voteComment(comment, vote)),
+        addComment: (comment) => dispatch(addNewComment(comment)),
+        updateComment: (comment) => dispatch(updateComment(comment)),
+        deleteComment: (id) => dispatch(deleteComment(id))
     }
 }
 
 function mapStateToProps(state, props) {
     let post = byId(state.entities.posts, props.match.params.post_id)
-    console.log('state', state)
+
     return {
         loading: state.config.loading,
         loadingComments: state.config.loadingComments,
-        post: Object.assign({}, post),
+        post,
         comments: state.entities.comments
     }
 }

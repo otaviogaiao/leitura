@@ -65,7 +65,7 @@ export const addComment = (comment) =>
     fetch(`${url}/comments`, {
          headers: {...headers},
          method: 'POST',
-         body: JSON.stringify({comment})
+         body: JSON.stringify(comment)
         })
         .then(res => res.json())
 

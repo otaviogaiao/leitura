@@ -1,15 +1,13 @@
 import React, {Component} from 'react'
 
-import {Well, Button, ButtonGroup, FormControl} from 'react-bootstrap'
+import {Well, Button} from 'react-bootstrap'
+import moment from 'moment'
 
 import LikeDislike from './LikeDislike.js'
-
-import { voteComment } from '../actions'
+import CommentForm from './CommentForm'
 
 import '../styles/comment.css'
 
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
 
 class Comment extends Component {
 
@@ -22,37 +20,35 @@ class Comment extends Component {
             return {editing: !oldState.editing}
         })
     }
-
-    vote = (vote) => {
-        this.props.dispatch(voteComment(this.props.comment, vote))
-    }
   
     render(){
-        const { comment } = this.props
+        const { comment, onVoteAction, onEditAction, onDeleteAction } = this.props
+        let date = moment(new Date(comment.timestamp)).format('MMMM Do YYYY, h:mm:ss a')
         return <Well>
-            <div>
-                <LikeDislike score={comment.voteScore} onVoteAction={this.vote}/>
-                {this.state.editing && 
+             {this.state.editing 
+               ?
                 <div>
-                    <form>
-                        <FormControl componentClass="textarea" style={{ minHeight: 200 }}
-                        defaultValue={comment.body} />
-                        <ButtonGroup>
-                            <Button>Save</Button>
-                            <Button onClick={this.edit}>Cancel</Button>
-                        </ButtonGroup>
-                    </form>
+                  <div className='comment-form'>
+                    <CommentForm username={comment.author} body={comment.body} 
+                        onSubmitAction={(username, body) => { onEditAction(comment, username, body);
+                                this.edit() }} />
+                  </div>
+                    <div className='cancel-button'>
+                        <Button bsStyle="danger" onClick={this.edit}>Cancel</Button>
+                    </div>
+                </div>
+                : 
+                <div className='comment'>
+                    <LikeDislike score={comment.voteScore} onVoteAction={(vote) => onVoteAction(comment, vote)}/>
+                    <span className='small'>By {comment.author} on {date}</span><br/>
+                    <p className='comment-body'>{comment.body}</p>
+                    <div>
+                        <a onClick={this.edit} className="link-black">Edit</a> <a className="link-black" onClick={() => onDeleteAction(comment.id)}>Delete</a>
+                    </div>
                 </div>}
-                {!this.state.editing && <div>
-                    <p>{comment.body}</p></div>}
-            </div>
-           
-            {!this.state.editing && <div>
-                <a onClick={this.edit} className="link-black">Edit</a> <a className="link-black">Delete</a>
-            </div>}
             
        </Well>
     }
 }
 
-export default withRouter(connect()(Comment))
+export default Comment

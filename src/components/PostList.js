@@ -5,10 +5,10 @@ class PostList extends Component {
     
 
     render() {
-        let { posts }= this.props
+        let { posts, onVoteAction }= this.props
         return (
             <div>
-                {posts.length > 0 && posts.map(post => <Post key={post.id} post={post}/>)}
+                {posts.length > 0 && posts.map(post => <Post key={post.id} post={post} onVoteAction={(vote) => onVoteAction(post.id, vote)} />)}
                 {posts.length === 0 && <div>There are no posts to show</div>}
             </div>
            
