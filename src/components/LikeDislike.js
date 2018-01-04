@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Button, Glyphicon} from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 
 class LikeDislike extends Component {
@@ -27,3 +28,8 @@ class LikeDislike extends Component {
 }
 
 export default LikeDislike
+
+LikeDislike.propTypes = {
+    score: PropTypes.number.isRequired,
+    onVoteAction: PropTypes.func
+}

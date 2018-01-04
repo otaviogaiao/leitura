@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 
 import {Grid, Row, Col, ButtonToolbar, ToggleButtonGroup, ToggleButton, Button} from 'react-bootstrap'
 
-import CategoryList from './CategoryList.js'
-import PostList from './PostList.js'
+import CategoryList from '../components/CategoryList.js'
+import PostList from '../components/PostList.js'
 import {Link, withRouter} from 'react-router-dom'
 
 import {connect} from 'react-redux'
@@ -11,7 +11,7 @@ import {getAllPosts, getAllPostsFromCategory, votePost } from '../actions'
 
 import 'url-search-params-polyfill';
 
-class Main extends Component {
+class MainContainer extends Component {
 
     constructor(props){
         super(props)
@@ -93,7 +93,6 @@ class Main extends Component {
     }
 }
 
-// const MainWithRouter = withRouter(Main)
 function mapDispatchToProps(dispatch){
     return {
         getPosts: () => dispatch(getAllPosts()),
@@ -115,4 +114,4 @@ function mapStateToProps(state, ownProps){
     return {categories, posts}
 }
   
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MainContainer))

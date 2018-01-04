@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import Comment from './Comment.js'
 
@@ -17,3 +18,10 @@ function CommentList (props) {
 }
 
 export default CommentList
+
+CommentList.propTypes = {
+    comments: PropTypes.array.isRequired,
+    onVoteAction: PropTypes.func.isRequired,
+    onEditAction: PropTypes.func.isRequired,
+    onDeleteAction: PropTypes.func.isRequired
+}

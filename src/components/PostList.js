@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Post from './Post.js'
+import PropTypes from 'prop-types'
 
 class PostList extends Component {
     
@@ -17,3 +18,8 @@ class PostList extends Component {
 }
 
 export default PostList
+
+PostList.propTypes = {
+    posts: PropTypes.array,
+    onVoteAction: PropTypes.func
+}

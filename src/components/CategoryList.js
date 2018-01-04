@@ -3,6 +3,7 @@ import {ListGroup, ListGroupItem} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 
 import {withRouter} from 'react-router'
+import PropTypes from 'prop-types'
 
 const CategoryList = ({categories}) => {
     return (
@@ -17,3 +18,7 @@ const CategoryList = ({categories}) => {
 }
 
 export default withRouter(CategoryList)
+
+CategoryList.propTypes = {
+    categories: PropTypes.array
+}

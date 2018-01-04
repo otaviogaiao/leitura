@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 
 import {Grid, Row, Col} from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
 import LikeDislike from './LikeDislike.js'
 import '../styles/headerPost.css'
@@ -57,3 +58,11 @@ function mapDispatchToProps(dispatch){
 }
 
 export default withRouter(connect(null, mapDispatchToProps)(HeaderPost))
+
+HeaderPost.propTypes = {
+    votePost: PropTypes.func.isRequired,
+    deletePost: PropTypes.func.isRequired,
+    post: PropTypes.object.isRequired,
+    history: PropTypes.object,
+    showActions: PropTypes.bool
+}

@@ -7,9 +7,9 @@ import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import _orderBy from 'lodash.orderby'
 
-import CommentList from './CommentList.js'
-import HeaderPost from './HeaderPost.js'
-import CommentForm from './CommentForm'
+import CommentList from '../components/CommentList.js'
+import HeaderPost from '../components/HeaderPost.js'
+import CommentForm from '../components/CommentForm'
 
 import { byId } from '../utils/helpers'
 
@@ -17,7 +17,7 @@ import { getPostById, getComments, voteComment, addNewComment, updateComment,
      deleteComment } from '../actions'
 
 
-class ShowPost extends Component {
+class PostContainer extends Component {
 
     state = {
         editing: false,
@@ -134,7 +134,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props) {
     let post = byId(state.entities.posts, props.match.params.post_id)
-    console.log(state.entities.comments)
+
     return {
         loading: state.config.loading,
         loadingComments: state.config.loadingComments,
@@ -143,4 +143,4 @@ function mapStateToProps(state, props) {
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ShowPost))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostContainer))

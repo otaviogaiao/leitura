@@ -1,5 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 import HeaderPost from './HeaderPost.js'
 
@@ -14,3 +15,7 @@ const Post = ({post}) => {
 }
 
 export default Post
+
+Post.propTypes = {
+    post: PropTypes.object.isRequired
+}

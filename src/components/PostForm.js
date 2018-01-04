@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {FormControl, Button, Grid, Row, Col, ControlLabel, FormGroup} from 'react-bootstrap'
-
+import PropTypes from 'prop-types'
 
 class PostForm extends Component {
 
@@ -98,3 +98,10 @@ class PostForm extends Component {
 }
 
 export default PostForm
+
+PostForm.propTypes = {
+    categories: PropTypes.array,
+    onCancelAction: PropTypes.func.isRequired,
+    onSubmitAction: PropTypes.func.isRequired,
+    post: PropTypes.object
+}

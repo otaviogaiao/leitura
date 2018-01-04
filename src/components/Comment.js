@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 
 import {Well, Button} from 'react-bootstrap'
 import moment from 'moment'
+import PropTypes from 'prop-types'
 
 import LikeDislike from './LikeDislike.js'
 import CommentForm from './CommentForm'
@@ -52,3 +53,10 @@ class Comment extends Component {
 }
 
 export default Comment
+
+Comment.propTypes = {
+    comment: PropTypes.object.isRequired,
+    onVoteAction: PropTypes.func.isRequired,
+    onEditAction: PropTypes.func.isRequired,
+    onDeleteAction: PropTypes.func.isRequired
+}

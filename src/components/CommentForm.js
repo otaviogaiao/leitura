@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import { Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 import '../styles/commentForm.css'
 
 class CommentForm extends Component {
@@ -51,3 +52,9 @@ class CommentForm extends Component {
 }
 
 export default CommentForm
+
+CommentForm.propTypes = {
+    username: PropTypes.string,
+    body: PropTypes.string,
+    onSubmitAction: PropTypes.func.isRequired
+}

@@ -79,10 +79,10 @@ export function getComments(postId){
 
 export function addNewComment(comment){
     return function(dispatch){
-        return addComment(comment).then(() => {
+        return addComment(comment).then((data) => {
             return dispatch({
                 type: ADD_COMMENT,
-                comment
+                comment: data
             })
         })
     }
@@ -90,10 +90,10 @@ export function addNewComment(comment){
 
 export function updateComment(comment) {
     return function(dispatch){
-        return updateCommentApi(comment).then(() => {
+        return updateCommentApi(comment).then((data) => {
             return dispatch({
                 type: UPDATE_COMMENT,
-                comment
+                comment: data
             })
         })
     }
@@ -112,13 +112,15 @@ export function deleteComment(id) {
 
 export function addNewPost(post){
     return dispatch => {
-        return addPost(post).then(data => dispatch({type: ADD_POST, post}))
+        return addPost(post).then(data => {
+            return dispatch({type: ADD_POST, post: data}) 
+        })
     }
 }
 
 export function updatePost(post){
     return dispatch => {
-        return updatePostApi(post).then(data => dispatch({type: UPDATE_POST, post}))
+        return updatePostApi(post).then(data => dispatch({type: UPDATE_POST, post: data}))
     }
 }
 

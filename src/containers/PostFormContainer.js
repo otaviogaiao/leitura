@@ -4,10 +4,10 @@ import {connect} from 'react-redux'
 import {addNewPost, getPostById, updatePost} from '../actions'
 import { withRouter } from 'react-router-dom'
 
-import PostForm from './PostForm'
+import PostForm from '../components/PostForm'
 import { byId } from '../utils/helpers'
 
-class NewPost extends Component {
+class PostFormContainer extends Component {
 
     constructor(props){
         super(props)
@@ -62,4 +62,4 @@ function mapStateToProps(state, props){
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(NewPost))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PostFormContainer))
