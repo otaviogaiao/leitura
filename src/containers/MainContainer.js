@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import {Grid, Row, Col, ButtonToolbar, ToggleButtonGroup, ToggleButton, Button} from 'react-bootstrap'
 
 import CategoryList from '../components/CategoryList.js'
-import PostList from '../components/PostList.js'
+import Post from '../components/Post.js'
 import {Link, withRouter} from 'react-router-dom'
 
 import {connect} from 'react-redux'
@@ -48,11 +48,20 @@ class MainContainer extends Component {
     }
 
     render(){
+        const { categories, posts } = this.props
         return (
             <Grid>
                 <Row>
-                    <Col md={4} lg={4} ><CategoryList categories={this.props.categories}/></Col>
-                    <Col md={4} lg={4}><PostList posts={this.props.posts} onVoteAction={this.vote}/></Col>
+                    <Col md={4} lg={4} ><CategoryList categories={categories}/></Col>
+                    <Col md={4} lg={4}>
+                        <div>
+                            {posts.length > 0 
+                                ? posts.map(post => <Post key={post.id} post={post} 
+                                    onVoteAction={(vote) => this.vote(post.id, vote)} />)
+                                : <div>There are no posts to show</div> 
+                             }
+                        </div>
+                    </Col>
                     <Col md={4} lg={4}>
                         <Row>
                             <Col md={6}>
