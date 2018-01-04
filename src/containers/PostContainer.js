@@ -24,12 +24,6 @@ class PostContainer extends Component {
         comment: ''
     }
 
-    // edit = () => {
-    //     this.setState((oldState) => {
-    //         return {editing: !oldState.editing}
-    //     })
-    // }
-
     componentDidMount(){
         const postId = this.props.match.params.post_id
         this.props.getPost(postId)

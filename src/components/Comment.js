@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import {Well, Button} from 'react-bootstrap'
+import {Well, Button, Grid, Row, Col} from 'react-bootstrap'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 
@@ -29,23 +29,45 @@ class Comment extends Component {
              {this.state.editing 
                ?
                 <div>
-                  <div className='comment-form'>
-                    <CommentForm username={comment.author} body={comment.body} 
-                        onSubmitAction={(username, body) => { onEditAction(comment, username, body);
-                                this.edit() }} />
-                  </div>
-                    <div className='cancel-button'>
-                        <Button bsStyle="danger" onClick={this.edit}>Cancel</Button>
-                    </div>
+                    <Grid fluid={true}>
+                        <Row>
+                            <Col sm={12} md={12}>
+                                <CommentForm username={comment.author} body={comment.body} 
+                            onSubmitAction={(username, body) => { onEditAction(comment, username, body);
+                                    this.edit() }} />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={12} md={12}>
+                            <div className='cancel-button'>
+                                <Button bsStyle="danger" onClick={this.edit}>Cancel</Button>
+                            </div>
+                            </Col>
+                        </Row>
+                    </Grid>
+                  {/* <div className='comment-form'>
+                    
+                  </div> */}
+
                 </div>
                 : 
                 <div className='comment'>
-                    <LikeDislike score={comment.voteScore} onVoteAction={(vote) => onVoteAction(comment, vote)}/>
-                    <span className='small'>By {comment.author} on {date}</span><br/>
-                    <p className='comment-body'>{comment.body}</p>
-                    <div>
-                        <a onClick={this.edit} className="link-black">Edit</a> <a className="link-black" onClick={() => onDeleteAction(comment.id)}>Delete</a>
-                    </div>
+                    <Grid fluid={true}>
+                        <Row>
+                            <Col sm={1} md={1}>
+                                <LikeDislike score={comment.voteScore} onVoteAction={(vote) => onVoteAction(comment, vote)}/>
+                            </Col>
+                            <Col sm={11} md={11}>
+                                <span className='small'>By {comment.author} on {date}</span><br/>
+                                <p className='comment-body'>{comment.body}</p>
+                                <div>
+                                    <a onClick={this.edit} className="link-black">Edit</a> <a className="link-black" onClick={() => onDeleteAction(comment.id)}>Delete</a>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Grid>
+                    
+                  
                 </div>}
             
        </Well>
