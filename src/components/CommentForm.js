@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 
 import { Button, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import PropTypes from 'prop-types'
-import '../styles/commentForm.css'
 
 class CommentForm extends Component {
 
