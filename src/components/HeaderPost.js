@@ -23,7 +23,7 @@ class HeaderPost extends Component {
     }
 
     render(){
-        const { post, showActions } = this.props
+        const { post } = this.props
         let date = moment(new Date(post.timestamp)).format('MMMM Do YYYY, h:mm:ss a')
         return (
             <Grid className="alinhar-esquerda">
@@ -37,10 +37,10 @@ class HeaderPost extends Component {
                         <h1>{post.title}</h1>
                         <div>
                             <p>Submitted on {date} by {post.author}</p>
-                            {showActions && <span><span className="link-black">
+                            <span><span className="link-black">
                                {post.commentCount === 1 ? '1 comment ' : `${post.commentCount} comments `}</span> 
                             <Link className="link-black" to={`/${post.category}/${post.id}/edit`}>Edit</Link> <a className="link-black" 
-                            onClick={this.delete}>Delete</a></span>}
+                            onClick={this.delete}>Delete</a></span>
                         </div>
                     </Col>
                 </Row>
@@ -63,6 +63,5 @@ HeaderPost.propTypes = {
     votePost: PropTypes.func.isRequired,
     deletePost: PropTypes.func.isRequired,
     post: PropTypes.object.isRequired,
-    history: PropTypes.object,
-    showActions: PropTypes.bool
+    history: PropTypes.object
 }

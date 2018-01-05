@@ -70,7 +70,7 @@ class MainContainer extends Component {
                             <Col md={6}>
                                 <div>             
                                         <ButtonToolbar>
-                                                <ToggleButtonGroup type="radio" name="sortBy" defaultValue={'date'}
+                                                <ToggleButtonGroup type="radio" name="sortBy" defaultValue={'score'}
                                                  onChange={this.changeSort}>
                                                     <ToggleButton value={'score'}>
                                                         Score
@@ -115,9 +115,9 @@ function mapDispatchToProps(dispatch){
 function mapStateToProps(state, ownProps){
     let { categories, posts } = state.entities
     const by = new URLSearchParams(ownProps.location.search)
-    by.get('sort') === 'score' 
-        ? posts = [...posts].sort((a, b) => a.voteScore < b.voteScore)
-        : posts = [...posts].sort((a, b) => a.timestamp < b.timestamp)
+    by.get('sort') === 'date' 
+        ? posts = [...posts].sort((a, b) => a.timestamp < b.timestamp)
+        : posts = [...posts].sort((a, b) => a.voteScore < b.voteScore)
 
 
     return {categories, posts}

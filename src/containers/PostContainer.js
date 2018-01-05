@@ -68,8 +68,7 @@ class PostContainer extends Component {
                    <Col md={9} lg={9}>
                       <div>
                           {!this.state.editing &&
-                           ([<HeaderPost key='header' showActions={true} 
-                                post={post}/>,
+                           ([<HeaderPost key='header' post={post}/>,
                             <div key='text' dangerouslySetInnerHTML={{__html: post.body}}></div>])
                            }
                            {this.state.editing &&
